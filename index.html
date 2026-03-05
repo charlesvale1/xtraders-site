@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>Xtraders - 심플 버전</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #050816;
+      --card: #0b1020;
+      --accent: #4f46e5;
+      --accent-soft: rgba(79, 70, 229, 0.12);
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --border: #1f2937;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #070b18 0, #020617 55%, #000 100%);
+      color: var(--text);
+    }
+    a { 
+      color: inherit; 
+      text-decoration: none; 
+    }
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(16px);
+      background: rgba(2, 6, 23, 0.92);
+      border-bottom: 1px solid rgba(31, 41, 55, 0.9);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.8rem 0;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+    }
+    .logo-mark {
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 20% 20%, #a855f7, #4f46e5 40%, #0f172a 100%);
+      box-shadow: 0 0 18px rgba(79, 70, 229, 0.9);
+    }
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 1.3rem;
+      font-size: 0.88rem;
+    }
+    nav a {
+      color: var(--muted);
+      transition: color 0.15s ease;
+    }
+    nav a:hover { color: var(--text); }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.45rem 1rem;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      background: transparent;
+      color: var(--text);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      border-color: transparent;
+      color: #fff;
+      box-shadow: 0 8px 24px rgba(79, 70, 229, 0.55);
+    }
+    .btn-primary:hover {
+      filter: brightness(1.05);
+      transform: translateY(-1px);
+    }
+    .btn-outline {
+      border-color: rgba(148, 163, 184, 0.5);
+      color: var(--muted);
+    }
+    .btn-outline:hover {
+      color: var(--text);
+      border-color: rgba(148, 163, 184, 0.9);
+      background: rgba(15, 23, 42, 0.9);
+    }
+    .btn-benefit {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      font-weight: 600;
+      box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
+      font-size: 0.75rem;
+      padding: 0.35rem 0.7rem;
+    }
+    .btn-benefit:hover {
+      filter: brightness(1.05);
+      transform: translateY(-1px);
+    }
+
+    /* Hero */
+    .hero {
+      padding: 2.6rem 0 2.2rem;
+    }
+    .hero-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.2fr);
+      gap: 2.4rem;
+      align-items: center;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.22rem 0.6rem;
+      border-radius: 999px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: rgba(15, 23, 42, 0.9);
+      font-size: 0.7rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.9rem;
+    }
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.85);
+    }
+    .hero-title {
+      font-size: 2.1rem;
+      line-height: 1.25;
+      letter-spacing: -0.04em;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+    .hero-title br { display: block; margin-bottom: 0.2em; }
+    .hero-title span {
+      background: linear-gradient(120deg, #a855f7, #4f46e5, #22c55e);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+    .hero-sub {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 1.1rem;
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      align-items: center;
+      margin-bottom: 0.8rem;
+    }
+    .hero-note {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .hero-panel {
+      background: var(--card);
+      border-radius: 1.2rem;
+      border: 1px solid rgba(31, 41, 55, 0.95);
+      padding: 1rem;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.9);
+    }
+    .hero-panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.6rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .hero-panel-title {
+      font-weight: 600;
+      color: var(--text);
+    }
+    .hero-panel-pill {
+      padding: 0.16rem 0.55rem;
+      border-radius: 999px;
+      border: 1px solid rgba(96, 165, 250, 0.8);
+      background: rgba(30, 64, 175, 0.35);
+      font-size: 0.7rem;
+      color: #bfdbfe;
+    }
+    .hero-panel-body {
+      background: radial-gradient(circle at top, rgba(79, 70, 229, 0.2), transparent 60%);
+      border-radius: 0.9rem;
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      padding: 0.8rem;
+      font-size: 0.8rem;
+    }
+    .hero-panel-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.45rem;
+    }
+    .hero-panel-row span.label { color: var(--muted); }
+    .hero-panel-row span.value { font-weight: 600; }
+    .hero-panel-highlight {
+      margin-top: 0.4rem;
+      padding: 0.4rem 0.6rem;
+      border-radius: 0.6rem;
+      background: rgba(34, 197, 94, 0.1);
+      border: 1px solid rgba(34, 197, 94, 0.5);
+      color: #bbf7d0;
+      font-size: 0.78rem;
+    }
+
+    section {
+      padding: 2.4rem 0;
+      border-top: 1px solid rgba(31, 41, 55, 0.85);
+    }
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1rem;
+      margin-bottom: 1.6rem;
+      flex-wrap: wrap;
+    }
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    .section-sub {
+      font-size: 0.85rem;
+      color: var(--muted);
+      max-width: 420px;
+    }
+
+    /* News Tabs */
+    .news-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 2.1fr) minmax(0, 1fr);
+      gap: 1.2rem;
+    }
+    .news-tabs {
+      display: flex;
+      gap: 0.4rem;
+      margin-bottom: 0.9rem;
+      flex-wrap: wrap;
+    }
+    .news-tab {
+      padding: 0.3rem 0.8rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      color: var(--muted);
+      cursor: pointer;
+      background: rgba(15, 23, 42, 0.9);
+      transition: all 0.15s ease;
+    }
+    .news-tab.active {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      color: #c7d2fe;
+    }
+    .news-list {
+      display: none;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.9rem;
+    }
+    .news-list.active { display: grid; }
+    .news-card {
+      background: var(--card);
+      border-radius: 0.9rem;
+      padding: 0.85rem;
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      font-size: 0.82rem;
+    }
+    .news-tag {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      margin-bottom: 0.3rem;
+    }
+    .news-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+    }
+    .news-desc {
+      color: var(--muted);
+      line-height: 1.5;
+      margin-bottom: 0.4rem;
+    }
+    .news-meta {
+      font-size: 0.75rem;
+      color: #6b7280;
+    }
+
+    .news-ad {
+      background: var(--card);
+      border-radius: 0.9rem;
+      padding: 0.9rem;
+      border: 1px dashed rgba(55, 65, 81, 0.9);
+      font-size: 0.82rem;
+    }
+    .news-ad-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      margin-bottom: 0.3rem;
+    }
+    .news-ad-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+    .news-ad-body {
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* YouTube */
+    .yt-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+    .yt-card {
+      background: var(--card);
+      border-radius: 0.9rem;
+      padding: 0.75rem;
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      font-size: 0.8rem;
+    }
+    .yt-thumb {
+      position: relative;
+      padding-top: 56.25%;
+      border-radius: 0.6rem;
+      overflow: hidden;
+      margin-bottom: 0.5rem;
+    }
+    .yt-thumb iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    .yt-title {
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+    }
+    .yt-meta {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    /* Benefits - Updated Layout */
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+    .broker-card {
+      background: var(--card);
+      border-radius: 0.9rem;
+      padding: 0.9rem;
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      font-size: 0.82rem;
+    }
+    .coin-grid {
+      display: grid;
+      gap: 0.6rem;
+    }
+    .coin-card {
+      background: var(--card);
+      border-radius: 0.9rem;
+      padding: 0.8rem;
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      font-size: 0.82rem;
+    }
+    .benefit-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      margin-bottom: 0.25rem;
+    }
+    .benefit-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+    .benefit-body {
+      color: var(--muted);
+      line-height: 1.55;
+      margin-bottom: 0.45rem;
+      font-size: 0.82rem;
+    }
+    .benefit-cta {
+      font-size: 0.78rem;
+      color: #a5b4fc;
+    }
+
+    footer {
+      border-top: 1px solid rgba(31, 41, 55, 0.9);
+      padding: 1.6rem 0 2rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      background: #020617;
+      margin-top: 2.2rem;
+    }
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 900px) {
+      nav { display: none; }
+      .hero-inner {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .news-layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .news-list {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .yt-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .benefits-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+    @media (max-width: 640px) {
+      .yt-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .hero-title { font-size: 1.75rem; }
+      .hero {
+        padding-top: 2.1rem;
+      }
+    }
+  </style>
+  <script>
+    function switchNewsTab(tab) {
+      const tabs = document.querySelectorAll('.news-tab');
+      const lists = document.querySelectorAll('.news-list');
+      tabs.forEach(t => t.classList.remove('active'));
+      lists.forEach(l => l.classList.remove('active'));
+      document.querySelector('.news-tab[data-tab="' + tab + '"]').classList.add('active');
+      document.getElementById('news-' + tab).classList.add('active');
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+      switchNewsTab('margin');
+    });
+  </script>
+</head>
+<body>
+  <header>
+    <div class="container header-inner">
+      <div class="logo">
+        <div class="logo-mark"></div>
+        <span>Xtraders</span>
+      </div>
+      <nav>
+        <a href="#hero">홈</a>
+        <a href="#news">뉴스·블로그</a>
+        <a href="#youtube">유튜브</a>
+        <a href="#benefits">브로커 &amp; 코인 혜택</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="hero">
+      <div class="container hero-inner">
+        <div>
+          <div class="badge">
+            <span class="badge-dot"></span>
+            <span>해외선물 · FX · 코인 정보 &amp; 혜택</span>
+          </div>
+          <h1 class="hero-title">
+            Xtraders에서<br />
+            마진거래, 매매기법, 경제와 금융 정보를 한번에
+          </h1>
+          <p class="hero-sub">
+            복잡한 회원제 플랫폼 대신,
+            오늘 시장을 이해하는 데 필요한 뉴스·블로그와
+            실제로 쓸 수 있는 브로커 &amp; 코인 셀퍼럴 혜택만 모았습니다.
+          </p>
+          <div class="hero-actions">
+            <button class="btn btn-primary" onclick="document.getElementById('news').scrollIntoView({behavior:'smooth'})">오늘 뉴스 보기</button>
+            <button class="btn btn-outline" onclick="document.getElementById('benefits').scrollIntoView({behavior:'smooth'})">브로커 &amp; 코인 혜택 보기</button>
+          </div>
+          <div class="hero-note">
+            스크롤 한 번 안에서 오늘의 기사, 유튜브, 브로커·코인 혜택까지 한눈에 확인할 수 있습니다.
+          </div>
+        </div>
+        <aside class="hero-panel" aria-label="오늘의 요약">
+          <div class="hero-panel-header">
+            <span class="hero-panel-title">오늘의 요약 (예시)</span>
+            <span class="hero-panel-pill">Daily Snapshot</span>
+          </div>
+          <div class="hero-panel-body">
+            <div class="hero-panel-row">
+              <span class="label">FX 주요 통화</span>
+              <span class="value">달러 약세 · 엔화 강세</span>
+            </div>
+            <div class="hero-panel-row">
+              <span class="label">해외선물 지수</span>
+              <span class="value">S&amp;P 소폭 조정</span>
+            </div>
+            <div class="hero-panel-row">
+              <span class="label">비트코인</span>
+              <span class="value">단기 박스권</span>
+            </div>
+            <div class="hero-panel-highlight">
+              아래 탭에서 오늘 시장과 관련된 글과 영상을 차례로 확인해 보세요.
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="news">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">뉴스 · 블로그</h2>
+          </div>
+          <p class="section-sub">
+            마진거래, 매매기법, 경제·금융으로 나누어
+            필요한 정보만 골라 볼 수 있습니다.
+          </p>
+        </div>
+        <div class="news-layout">
+          <div>
+            <div class="news-tabs">
+              <button class="news-tab active" data-tab="margin" onclick="switchNewsTab('margin')">마진거래</button>
+              <button class="news-tab" data-tab="strategy" onclick="switchNewsTab('strategy')">매매기법</button>
+              <button class="news-tab" data-tab="economy" onclick="switchNewsTab('economy')">경제·금융</button>
+            </div>
+            <div id="news-margin" class="news-list active">
+              <article class="news-card">
+                <div class="news-tag">마진거래 · 기초</div>
+                <h3 class="news-title">FX마진거래, 증거금과 레버리지만 먼저 이해하기</h3>
+                <p class="news-desc">
+                  증거금이 무엇인지, 레버리지가 몇 배까지 가능한지,
+                  계좌가 언제 위험해지는지 사례로 설명합니다.
+                </p>
+                <div class="news-meta">입문 · 오늘 업데이트</div>
+              </article>
+              <article class="news-card">
+                <div class="news-tag">마진거래 · 구조</div>
+                <h3 class="news-title">DD, NDD, ECN 브로커 구조 한 번에 보기</h3>
+                <p class="news-desc">
+                  개미FX 스타일로 정리한, 마진 브로커 구조와
+                  어떤 구조가 나에게 맞는지 판단하는 기준입니다.
+                </p>
+                <div class="news-meta">구조 · 그림 설명</div>
+              </article>
+            </div>
+            <div id="news-strategy" class="news-list">
+              <article class="news-card">
+                <div class="news-tag">매매기법 · 기본기</div>
+                <h3 class="news-title">추세장 · 박스장, 구분부터 시작하는 매매기법</h3>
+                <p class="news-desc">
+                  차트를 크게 보고, 오늘이 추세장인지 박스장인지
+                  먼저 확인하는 간단한 체크리스트입니다.
+                </p>
+                <div class="news-meta">실전 · 이번 주</div>
+              </article>
+              <article class="news-card">
+                <div class="news-tag">매매기법 · 실전</div>
+                <h3 class="news-title">손절라인, 어디까지 버티고 어디서 끊을 것인가</h3>
+                <p class="news-desc">
+                  계좌를 지키는 손절 기준을,
+                  퍼센트와 가격, 시간으로 나누어 설명합니다.
+                </p>
+                <div class="news-meta">실전 · 예시 포함</div>
+              </article>
+            </div>
+            <div id="news-economy" class="news-list">
+              <article class="news-card">
+                <div class="news-tag">경제 · 큰 그림</div>
+                <h3 class="news-title">금리, 환율, 지수가 어떻게 연결되는가</h3>
+                <p class="news-desc">
+                  미국 금리와 달러, 코스피와 환율이
+                  서로 어떤 영향을 주고받는지 쉽게 풀어 설명합니다.
+                </p>
+                <div class="news-meta">경제 · 개념 정리</div>
+              </article>
+              <article class="news-card">
+                <div class="news-tag">경제 · 이슈</div>
+                <h3 class="news-title">오늘 체크할 경제지표 3가지</h3>
+                <p class="news-desc">
+                  오늘 밤 발표되는 주요 지표와,
+                  FX · 코인 시장에 미칠 수 있는 영향을 간단히 정리합니다.
+                </p>
+                <div class="news-meta">오늘 · 체크 포인트</div>
+              </article>
+            </div>
+          </div>
+          <aside class="news-ad" aria-label="광고 자리">
+            <div class="news-ad-label">광고 · 제휴</div>
+            <div class="news-ad-title">Xtraders 제휴 브로커 / 서비스 광고 영역</div>
+            <div class="news-ad-body">
+              이 영역에는 Xlence, T4Trade, 코인 거래소 셀퍼럴,
+              또는 전업 트레이더에게 도움이 되는 서비스 광고가 들어갈 수 있습니다.
+              너무 요란하지 않게, 하지만 눈에 잘 띄도록 배치했습니다.
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section id="youtube">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">유튜브</h2>
+          </div>
+          <p class="section-sub">
+            실전 복기, 전략 설명, 멘탈 토크를 영상으로 모았습니다.
+            썸네일을 눌러 바로 재생하거나, 전체 영상은 유튜브 채널에서 확인하세요.
+          </p>
+        </div>
+        <div class="yt-grid">
+          <article class="yt-card">
+            <div class="yt-thumb">
+              <iframe src="https://www.youtube.com/embed/TTN6kHBLE5Y?start=505" title="반지하에서 한강뷰까지" allowfullscreen></iframe>
+            </div>
+            <div class="yt-title">반지하에서 한강뷰까지 | 코인 주식 사업으로 날린 경험</div>
+            <div class="yt-meta">실전 복기 · 12분</div>
+          </article>
+          <article class="yt-card">
+            <div class="yt-thumb">
+              <iframe src="https://www.youtube.com/embed/AdXXFKowx8E?start=1" title="해외선물 매매기법" allowfullscreen></iframe>
+            </div>
+            <div class="yt-title">해외선물 매매기법 | 하루 한 번만 보는 진입 기준</div>
+            <div class="yt-meta">전략 설명 · 9분</div>
+          </article>
+          <article class="yt-card">
+            <div class="yt-thumb">
+              <iframe src="https://www.youtube.com/embed/8xxRSyx4Cas" title="전업 트레이더 멘탈 관리" allowfullscreen></iframe>
+            </div>
+            <div class="yt-title">전업 트레이더 멘탈 관리 | 번아웃 극복</div>
+            <div class="yt-meta">멘탈 · 7분</div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="benefits">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">브로커 &amp; 코인 혜택</h2>
+          </div>
+          <p class="section-sub">
+            FX · 해외선물은 브로커, 코인 선물은 거래소 셀퍼럴로 나누어
+            실질적인 수수료 절감과 보너스를 정리했습니다.
+          </p>
+        </div>
+        <div class="benefits-grid">
+          <article class="broker-card">
+            <div class="benefit-label">브로커</div>
+            <h3 class="benefit-title">Xlence (FX · CFD)</h3>
+            <p class="benefit-body">
+              최대 레버리지 1:500, MT4 지원, 주요 통화쌍 스프레드 등
+              FX 트레이더를 위한 기본 조건과 함께,
+              Xtraders 경유 시 적용되는 페이백 조건을 정리합니다.
+            </p>
+            <button class="btn btn-benefit" onclick="window.open('https://xlence.com/register', '_blank')">Xlence 혜택 받기 →</button>
+          </article>
+          <article class="broker-card">
+            <div class="benefit-label">브로커</div>
+            <h3 class="benefit-title">T4Trade (FX · 지수 · 금속)</h3>
+            <p class="benefit-body">
+              FX, 지수, 원자재 등 다양한 자산군과 레버리지, 수수료 구조를
+              전업 트레이더 관점에서 정리하고,
+              Xtraders를 통한 추가 혜택을 안내합니다.
+            </p>
+            <button class="btn btn-benefit" onclick="window.open('https://t4trade.com/register', '_blank')">T4Trade 혜택 받기 →</button>
+          </article>
+          <article class="coin-card">
+            <div class="benefit-label">코인 거래소</div>
+            <h3 class="benefit-title">OKX 셀퍼럴 혜택</h3>
+            <p class="benefit-body">
+              OKX 공식 VIP 링크로 가입하면 수수료 리워드와
+              추가 거래 보너스를 받을 수 있습니다.
+            </p>
+            <button class="btn btn-benefit" onclick="window.open('https://okx.com/join/VIPACCESS', '_blank')">OKX 혜택 받기 →</button>
+          </article>
+          <article class="coin-card">
+            <div class="benefit-label">코인 거래소</div>
+            <h3 class="benefit-title">Bitget 셀퍼럴 혜택</h3>
+            <p class="benefit-body">
+              Bitget 카피트레이딩과 선물 거래 수수료
+              리워드 혜택을 받을 수 있는 링크입니다.
+            </p>
+            <button class="btn btn-benefit" onclick="window.open('https://bitget.com/register', '_blank')">Bitget 혜택 받기 →</button>
+          </article>
+          <article class="coin-card">
+            <div class="benefit-label">코인 거래소</div>
+            <h3 class="benefit-title">Bybit 셀퍼럴 혜택</h3>
+            <p class="benefit-body">
+              Bybit USDT 선물과 정규직 거래소 수수료
+              리워드 혜택을 받을 수 있는 링크입니다.
+            </p>
+            <button class="btn btn-benefit" onclick="window.open('https://bybit.com/register', '_blank')">Bybit 혜택 받기 →</button>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div>
+        <div style="font-weight:600; letter-spacing:0.12em; text-transform:uppercase; font-size:0.78rem; margin-bottom:0.3rem;">Xtraders</div>
+        <div>
+          전업 트레이더의 시각으로,
+          해외선물 · FX · 코인 마켓을 이해하는 데 필요한 정보와
+          실질적인 혜택만 선별해 제공합니다.
+        </div>
+      </div>
+      <div>
+        문의: contact@xtraders.com (예시)<br />
+        카카오톡 채널 문의: @xtraders<br />
+        파생상품 거래는 원금 손실을 포함한 큰 손실이 발생할 수 있으며,
+        모든 투자 결정과 책임은 투자자 본인에게 있습니다.
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
