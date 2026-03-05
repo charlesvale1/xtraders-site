@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>FX마진거래, 증거금과 레버리지 쉽게 이해하기 - Xtraders</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #050816;
+      --card: #0b1020;
+      --accent: #4f46e5;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --border: #1f2937;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #070b18 0, #020617 55%, #000 100%);
+      color: var(--text);
+      line-height: 1.8;
+    }
+    a { color: inherit; text-decoration: none; }
+    .container { max-width: 720px; margin: 0 auto; padding: 0 1.25rem; }
+    header {
+      position: sticky; top: 0; z-index: 20;
+      backdrop-filter: blur(16px);
+      background: rgba(2, 6, 23, 0.92);
+      border-bottom: 1px solid rgba(31, 41, 55, 0.9);
+    }
+    .header-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.8rem 0;
+      max-width: 1080px; margin: 0 auto; padding-left: 1.25rem; padding-right: 1.25rem;
+    }
+    .logo {
+      display: flex; align-items: center; gap: 0.45rem;
+      font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; font-size: 0.85rem;
+    }
+    .logo-mark {
+      width: 22px; height: 22px; border-radius: 999px;
+      background: radial-gradient(circle at 20% 20%, #a855f7, #4f46e5 40%, #0f172a 100%);
+      box-shadow: 0 0 18px rgba(79, 70, 229, 0.9);
+    }
+    .back-btn {
+      font-size: 0.82rem; color: var(--muted);
+      display: flex; align-items: center; gap: 0.3rem;
+      transition: color 0.15s;
+    }
+    .back-btn:hover { color: var(--text); }
+    .post-wrap { padding: 2.5rem 0 4rem; }
+    .post-meta {
+      display: flex; align-items: center; gap: 0.6rem;
+      margin-bottom: 1rem; flex-wrap: wrap;
+    }
+    .post-tag {
+      font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.14em;
+      padding: 0.2rem 0.55rem; border-radius: 999px;
+      border: 1px solid rgba(79, 70, 229, 0.7);
+      background: rgba(79, 70, 229, 0.12); color: #c7d2fe;
+    }
+    .post-date { font-size: 0.78rem; color: var(--muted); }
+    .post-title {
+      font-size: 1.75rem; font-weight: 700;
+      letter-spacing: -0.03em; line-height: 1.25;
+      margin-bottom: 0.75rem;
+    }
+    .post-summary {
+      font-size: 1rem; color: var(--muted);
+      border-left: 3px solid var(--accent);
+      padding-left: 1rem; margin-bottom: 2rem;
+    }
+    .post-body h2 {
+      font-size: 1.15rem; font-weight: 600;
+      margin-top: 2rem; margin-bottom: 0.6rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid rgba(31, 41, 55, 0.9);
+    }
+    .post-body p { color: var(--muted); margin-bottom: 1rem; }
+    .post-body ul { color: var(--muted); padding-left: 1.2rem; margin-bottom: 1rem; }
+    .post-body li { margin-bottom: 0.4rem; }
+    .post-body strong { color: var(--text); }
+    .post-body .highlight-box {
+      background: rgba(239, 68, 68, 0.08);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      border-radius: 0.7rem;
+      padding: 0.9rem 1rem;
+      margin: 1.2rem 0;
+      color: #fca5a5;
+      font-size: 0.9rem;
+    }
+    .post-body .tip-box {
+      background: rgba(34, 197, 94, 0.08);
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      border-radius: 0.7rem;
+      padding: 0.9rem 1rem;
+      margin: 1.2rem 0;
+      color: #bbf7d0;
+      font-size: 0.9rem;
+    }
+    hr { border: none; border-top: 1px solid rgba(31, 41, 55, 0.9); margin: 2rem 0; }
+    .back-bottom {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      margin-top: 2.5rem; padding: 0.5rem 1.1rem;
+      border-radius: 999px; border: 1px solid rgba(148, 163, 184, 0.4);
+      font-size: 0.82rem; color: var(--muted);
+      transition: all 0.15s;
+    }
+    .back-bottom:hover { color: var(--text); border-color: rgba(148,163,184,0.9); }
+    footer {
+      border-top: 1px solid rgba(31, 41, 55, 0.9);
+      padding: 1.6rem 0; font-size: 0.75rem; color: var(--muted);
+      background: #020617; text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <div class="logo-mark"></div>
+        <span>Xtraders</span>
+      </a>
+      <a href="index.html" class="back-btn">← 홈으로 돌아가기</a>
+    </div>
+  </header>
+
+  <main class="post-wrap">
+    <div class="container">
+      <div class="post-meta">
+        <span class="post-tag">마진거래</span>
+        <span class="post-date">2026년 3월 5일</span>
+      </div>
+      <h1 class="post-title">FX마진거래, 증거금과 레버리지 쉽게 이해하기</h1>
+      <p class="post-summary">
+        처음 마진거래를 시작할 때 가장 헷갈리는 증거금과 레버리지 개념을
+        실제 사례로 쉽게 정리했습니다.
+      </p>
+
+      <div class="post-body">
+        <h2>증거금이란?</h2>
+        <p>
+          증거금은 쉽게 말해 <strong>거래를 하기 위해 미리 맡겨두는 보증금</strong>입니다.
+        </p>
+        <p>
+          예를 들어 100만원짜리 거래를 할 때, 증거금이 10%라면
+          실제로는 10만원만 있으면 거래를 시작할 수 있습니다.
+        </p>
+
+        <hr />
+
+        <h2>레버리지란?</h2>
+        <p>레버리지는 <strong>내 돈보다 더 큰 금액으로 거래할 수 있는 배율</strong>입니다.</p>
+        <ul>
+          <li>레버리지 10배 = 10만원으로 100만원짜리 거래 가능</li>
+          <li>레버리지 100배 = 1만원으로 100만원짜리 거래 가능</li>
+        </ul>
+
+        <hr />
+
+        <h2>주의할 점</h2>
+        <p>
+          레버리지가 높을수록 수익도 크지만, 손실도 같은 배율로 커집니다.
+        </p>
+        <div class="highlight-box">
+          ⚠️ 레버리지 100배로 거래 중 가격이 1%만 반대로 움직여도
+          <strong>계좌 전액이 사라질 수 있습니다.</strong>
+        </div>
+        <div class="tip-box">
+          ✅ 처음 시작할 때는 레버리지를 낮게 설정하고,
+          거래 규모를 작게 유지하는 것이 중요합니다.
+        </div>
+      </div>
+
+      <a href="index.html" class="back-bottom">← 블로그 목록으로 돌아가기</a>
+    </div>
+  </main>
+
+  <footer>
+    <div>파생상품 거래는 원금 손실을 포함한 큰 손실이 발생할 수 있으며, 모든 투자 결정과 책임은 투자자 본인에게 있습니다.</div>
+  </footer>
+</body>
+</html>
